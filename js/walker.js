@@ -1,3 +1,6 @@
+//The MIT License (MIT)
+//Copyright (c) 2016 Meliq Pilosyan
+
 (function () { 'use strict';
   function angelToDirection(a) {
     var d = '', f = 0;
@@ -27,44 +30,49 @@
     }
 
     this.updateWith = init.bind(this);
-    this.add = function (pos) {
-      return new Position(this.x + pos.x, this.y + pos.y)
-    };
-    this.subtract = function (pos) {
-      return new Position(this.x - pos.x, this.y - pos.y)
-    };
-    this.multiple = function (n) {
-      return new Position(this.x * n, this.y * n)
-    };
-    this.divide = function (n) {
-      return new Position(this.x / n, this.y / n)
-    };
-    this.equals = function (pos) {
-      return pos.subtract(this).manhattanLength() < 5
-    };
-    this.manhattanLength = function() {
-      return Math.abs(this.x) + Math.abs(this.y)
-    };
-    this.angel = function () {
-      return Math.floor(Math.atan2(this.y, this.x) * 180 / Math.PI)
-    };
 
     init.call(this, _x, _y);
   }
 
-  function Person() {
-    var moveID,
-    speed = 3,
-    direction = 'down',
-    vector = new Position(),
-    destination = new Position(),
-    el = document.getElementById('walker'),
-    currentPos = new Position(elementPos(el));
+  Position.prototype = {
+    changeWith: function (pos) {
+      this.x += pos.x;
+      this.y += pos.y;
+      return this
+    },
+    subtract: function (pos) {
+      return new Position(this.x - pos.x, this.y - pos.y)
+    },
+    multiply: function (n) {
+      return new Position(this.x * n, this.y * n)
+    },
+    divide: function (n) {
+      return new Position(this.x / n, this.y / n)
+    },
+    equals: function (pos) {
+      return pos.subtract(this).manhattanLength() < 5
+    },
+    manhattanLength: function() {
+      return Math.abs(this.x) + Math.abs(this.y)
+    },
+    angel: function () {
+      return Math.floor(Math.atan2(this.y, this.x) * 180 / Math.PI)
+    }
+  };
+
+  function Walker() {
+    var MOVE_COEFFICIENT = 3, MOVE_INTERVAL = 63,
+        moveID,
+        currentDirection = 'down',
+        currentVector = new Position(),
+        destination = new Position(),
+        walkerElement = document.getElementById('walker'),
+        currentPos = new Position(elementPos(walkerElement));
 
     function move() {
-      currentPos.updateWith(currentPos.add(vector.multiple(speed)));
+      currentPos.changeWith(currentVector.multiply(MOVE_COEFFICIENT));
       if(currentPos.equals(destination)) {
-        el.classList.remove('go');
+        walkerElement.classList.remove('go');
         clearInterval(moveID);
         moveID = 0
       }
@@ -72,41 +80,41 @@
     }
 
     function makeAStep() {
-      el.style.top = (currentPos.y - 90) + 'px';
-      el.style.left = (currentPos.x - 64) + 'px'
+      walkerElement.style.top = (currentPos.y - 90) + 'px';
+      walkerElement.style.left = (currentPos.x - 64) + 'px'
     }
 
     function rotate(angel) {
       var dir = angelToDirection(angel);
-      el.classList.remove(direction, 'flip');
-      el.classList.add(direction = dir[0]);
-      dir[1] && el.classList.add('flip')
+      walkerElement.classList.remove(currentDirection, 'flip');
+      walkerElement.classList.add(currentDirection = dir[0]);
+      dir[1] && walkerElement.classList.add('flip')
     }
 
     function elementPos() {
-      return { x: el.offsetLeft + 64, y: el.offsetTop + 90 }
+      return { x: walkerElement.offsetLeft + 64, y: walkerElement.offsetTop + 90 }
     }
 
     this.setDestination = function (pos) {
       var delta = pos.subtract(currentPos), ang = delta.angel();
 
       rotate(ang);
-      vector.updateWith(delta.divide(delta.manhattanLength()));
+      currentVector.updateWith(delta.divide(delta.manhattanLength()));
       destination.updateWith(pos);
       return this
     };
     this.walk = function () {
-      moveID || (moveID = setInterval(move, 63), el.classList.add('go'))
+      moveID || (moveID = setInterval(move, MOVE_INTERVAL), walkerElement.classList.add('go'))
     }
   }
 
-  function Play() {
-    var walker = new Person();
+  function Walk() {
+    var walker = new Walker();
 
     document.onclick = function (ev) {
       walker.setDestination(new Position(ev)).walk();
     }
   }
 
-  Play()
+  Walk()
 }());
