@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+#walker {
+    position: fixed;
+    width: 128px;
+    height: 128px;
+    top: calc(50% - 64px);
+    left: calc(50% - 64px);
+    background-image: url('../images/walk_animation.png');
+}
+
+.up {
+    background-position-x: 0;
+    background-position-y: 0;
+}
+
+.up_ {
+    background-position-x: 0;
+    background-position-y: -128px;
+}
+
+.up__ {
+    background-position-x: 0;
+    background-position-y: -256px;
+}
+
+.right {
+    background-position-x: 0;
+    background-position-y: -384px;
+}
+
+.down__ {
+    background-position-x: 0;
+    background-position-y: -512px;
+}
+
+.down_ {
+    background-position-x: 0;
+    background-position-y: -640px;
+}
+
+.down {
+    background-position-x: 0;
+    background-position-y: -768px;
+}
+
+.go {
+    -webkit-animation: walk .9s steps(14) infinite;
+    -moz-animation: walk .9s steps(14) infinite;
+    -o-animation: walk .9s steps(14) infinite;
+    animation: walk .9s steps(14) infinite;
+}
+
+.flip {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+@-webkit-keyframes walk {
+    from { background-position-x: 0; }
+    to { background-position-x: -1792px; }
+}
+@-moz-keyframes walk {
+    from { background-position-x: 0; }
+    to { background-position-x: -1792px; }
+}
+@-o-keyframes walk {
+    from { background-position-x: 0; }
+    to { background-position-x: -1792px; }
+}
+@keyframes walk {
+    from { background-position-x: 0; }
+    to { background-position-x: -1792px; }
+}
