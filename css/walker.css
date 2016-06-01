@@ -14,38 +14,31 @@ body {
 }
 
 .up {
-    background-position-x: 0;
-    background-position-y: 0;
+    background-position: 0 0;
 }
 
 .up_ {
-    background-position-x: 0;
-    background-position-y: -128px;
+    background-position: 0 -128px;
 }
 
 .up__ {
-    background-position-x: 0;
-    background-position-y: -256px;
+    background-position: 0 -256px;
 }
 
 .right {
-    background-position-x: 0;
-    background-position-y: -384px;
+    background-position: 0 -384px;
 }
 
 .down__ {
-    background-position-x: 0;
-    background-position-y: -512px;
+    background-position: 0 -512px;
 }
 
 .down_ {
-    background-position-x: 0;
-    background-position-y: -640px;
+    background-position: 0 -640px;
 }
 
 .down {
-    background-position-x: 0;
-    background-position-y: -768px;
+    background-position: 0 -768px;
 }
 
 .go {

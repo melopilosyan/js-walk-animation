@@ -61,7 +61,7 @@
   };
 
   function Walker() {
-    var MOVE_COEFFICIENT = 3, MOVE_INTERVAL = 63,
+    var MOVE_COEFFICIENT = 2.9, MOVE_INTERVAL = 62,
         moveID,
         currentDirection = 'down',
         currentVector = new Position(),
