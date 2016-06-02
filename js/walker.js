@@ -21,8 +21,6 @@
   }
 
   function Position(_x, _y) {
-    var x, y;
-
     function init(_x, _y) {
       typeof _x == 'object' ?
         (this.x = _x.x || _x.clientX, this.y = _x.y || _x.clientY) :
@@ -31,7 +29,7 @@
 
     this.updateWith = init.bind(this);
 
-    init.call(this, _x, _y);
+    this.updateWith()
   }
 
   Position.prototype = {
