@@ -29,7 +29,7 @@
 
     this.updateWith = init.bind(this);
 
-    this.updateWith()
+    this.updateWith(_x, _y)
   }
 
   Position.prototype = {
