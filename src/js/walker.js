@@ -1,5 +1,5 @@
-//The MIT License (MIT)
-//Copyright (c) 2016 Meliq Pilosyan
+// This software is under the MIT License (MIT)
+// Copyright (c) 2016 Meliq Pilosyan
 
 (function () { 'use strict';
   function angelToDirection(a) {
