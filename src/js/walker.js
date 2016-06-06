@@ -116,8 +116,9 @@
       var dir = angelToDirection(angel);
       wandererElement.classList.remove(currentDirection, currentAnimation, 'flip');
 
-      wandererElement.classList.add(currentDirection = dir[0], currentAnimation = 'walk-' +  currentDirection);
-      dir[1] && wandererElement.classList.add('flip')
+      wandererElement.classList.add(currentDirection = dir[0]);
+      dir[1] && wandererElement.classList.add('flip');
+      currentAnimation = 'walk-' +  currentDirection
     }
 
     function elementPos() {
@@ -134,7 +135,8 @@
       return this
     };
     this.walk = function () {
-      moveID || (moveID = setInterval(move, MOVE_INTERVAL), wandererElement.classList.add(currentAnimation))
+      moveID || (moveID = setInterval(move, MOVE_INTERVAL));
+      wandererElement.classList.add(currentAnimation)
     };
 
     // beforeChangeDestination
