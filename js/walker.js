@@ -20,16 +20,43 @@
     return [d, f]
   }
 
-  function Position(_x, _y) {
-    function init(_x, _y) {
-      typeof _x == 'object' ?
-        (this.x = _x.x || _x.clientX, this.y = _x.y || _x.clientY) :
-        (this.x = _x || 0, this.y = _y || 0);
+  function walkerWillCallTheseBack() {
+    var element = document.createElement('div'), style = element.style,
+        computedStyle, w, h;
+
+    // get CSS width and height of class 'flashing'
+    element.setAttribute('class', 'destination');
+    document.body.appendChild(element);
+    computedStyle = window.getComputedStyle(element);
+    w = parseInt(computedStyle.getPropertyValue('width'));
+    h = parseInt(computedStyle.getPropertyValue('height'));
+
+    element.appendChild(document.createElement('div'))
+    element.appendChild(document.createElement('div'))
+
+
+    return {
+      beforeChangeDestination: function(destination) {
+        style.left = (destination.x - w / 2) + 'px';
+        style.top = (destination.y - h / 2) + 'px';
+        element.classList.add('blink');
+        document.body.appendChild(element);
+      },
+      afterStop: function() {
+        element.classList.remove('blink');
+        element.remove()
+      }
+    }
+  }
+
+  function Position(x, y) {
+    function init(x, y) {
+      typeof x == 'object' ?
+        (this.x = x.x || x.clientX, this.y = x.y || x.clientY) :
+        (this.x = x || 0, this.y = y || 0);
     }
 
-    this.updateWith = init.bind(this);
-
-    this.updateWith(_x, _y)
+    (this.updateWith = init.bind(this))(x, y)
   }
 
   Position.prototype = {
@@ -48,7 +75,7 @@
       return new Position(this.x / n, this.y / n)
     },
     equals: function (pos) {
-      return pos.subtract(this).manhattanLength() < 5
+      return pos.subtract(this).manhattanLength() < 2
     },
     manhattanLength: function() {
       return Math.abs(this.x) + Math.abs(this.y)
@@ -58,10 +85,12 @@
     }
   };
 
-  function Walker() {
-    var MOVE_COEFFICIENT = 2.9, MOVE_INTERVAL = 62,
-        moveID,
+  function Walker(doAfterStop) {
+    var MOVE_COEFFICIENT = 2.9, MOVE_INTERVAL = 62, moveID,
+        beforeChangeDestination = function () {},
+        afterStop = function () {},
         currentDirection = 'down',
+        currentAnimation = 'walk-down',
         currentVector = new Position(),
         destination = new Position(),
         walkerElement = document.getElementById('walker'),
@@ -70,8 +99,9 @@
     function move() {
       currentPos.changeWith(currentVector.multiply(MOVE_COEFFICIENT));
       if(currentPos.equals(destination)) {
-        walkerElement.classList.remove('go');
+        walkerElement.classList.remove(currentAnimation);
         clearInterval(moveID);
+        afterStop();
         moveID = 0
       }
       makeAStep()
@@ -84,8 +114,9 @@
 
     function rotate(angel) {
       var dir = angelToDirection(angel);
-      walkerElement.classList.remove(currentDirection, 'flip');
-      walkerElement.classList.add(currentDirection = dir[0]);
+      walkerElement.classList.remove(currentDirection, currentAnimation, 'flip');
+
+      walkerElement.classList.add(currentDirection = dir[0], currentAnimation = 'walk-' +  currentDirection);
       dir[1] && walkerElement.classList.add('flip')
     }
 
@@ -97,17 +128,27 @@
       var delta = pos.subtract(currentPos), ang = delta.angel();
 
       rotate(ang);
+      beforeChangeDestination(pos);
       currentVector.updateWith(delta.divide(delta.manhattanLength()));
       destination.updateWith(pos);
       return this
     };
     this.walk = function () {
-      moveID || (moveID = setInterval(move, MOVE_INTERVAL), walkerElement.classList.add('go'))
+      moveID || (moveID = setInterval(move, MOVE_INTERVAL), walkerElement.classList.add(currentAnimation))
+    };
+
+    // beforeChangeDestination
+    // afterStop
+    this.setCallBacks = function(opts) {
+      typeof opts.beforeChangeDestination === 'function' && (beforeChangeDestination = opts.beforeChangeDestination)
+      typeof opts.afterStop === 'function' && (afterStop = opts.afterStop)
     }
   }
 
   function Walk() {
     var walker = new Walker();
+
+    walker.setCallBacks(walkerWillCallTheseBack());
 
     document.onclick = function (ev) {
       walker.setDestination(new Position(ev)).walk();

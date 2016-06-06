@@ -1,0 +1,122 @@
+$fw: 30px;
+$fh: 30px;
+$fdelta: 2px;
+$delta: 3;
+$directions: up up_ up__ right down__ down_ down;
+
+@mixin state($fd, $d) {
+  top: $fd + $d;
+  left: $fd + $d;
+  width: $fw - 2 * $fd - 2 * $d;
+  height: $fh - 2 * $fd - 2 * $d; }
+
+@mixin state-outer($d: 0) {
+  @include state(-$fdelta, $d); }
+
+@mixin state-inner($d: 0) {
+  @include state($fdelta, $d); }
+
+@mixin transform($props...) {
+  -webkit-transform: $props;
+     -moz-transform: $props;
+      -ms-transform: $props;
+          transform: $props; }
+
+@mixin animation($props...) {
+  -webkit-animation: $props;
+     -moz-animation: $props;
+      -ms-animation: $props;
+          animation: $props; }
+
+@mixin animation-name($props...) {
+  -webkit-animation-name: $props;
+     -moz-animation-name: $props;
+      -ms-animation-name: $props;
+          animation-name: $props; }
+
+
+html {
+  cursor: crosshair; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #e9ebee; }
+
+#walker {
+  position: fixed;
+  width: 128px;
+  height: 128px;
+  top: calc(50% - 64px);
+  left: calc(50% - 64px);
+  background-image: url('../images/walk_animation.png'); }
+
+$i: -1;
+@each $dir in $directions {
+  $i: $i + 1;
+  $y: $i * -128px;
+  .#{$dir} {
+    background-position: 0 $y; }
+
+  .walk-#{$dir} {
+    @include animation(walk_#{$dir} .9s steps(14) infinite); }
+
+  @-webkit-keyframes walki_#{$dir} {
+    from { background-position: 0 $y; }
+    to { background-position: -1792px $y; } }
+  @keyframes walk_#{$dir} {
+    from { background-position: 0 $y; }
+    to { background-position: -1792px $y; } }
+}
+
+.flip {
+  @include transform(rotateY(180deg)); }
+
+
+.destination {
+  position: fixed;
+  top: -400px;
+  left: -400px;
+  width: $fw;
+  height: $fh;
+  z-index: -10;
+
+  > div {
+    position: absolute;
+    border-radius: 50%;
+    z-index: -2;
+
+    @include transform(rotate3d(1, 0, 0, 40deg)); }
+
+  div:first-child {
+    @include state-outer();
+    background-color: green; }
+
+  div:last-child {
+    @include state-inner();
+    background-color: #e9ebee; } }
+
+.destination.blink {
+  > div {
+    @include animation(.65s ease-in-out infinite); }
+  div:first-child {
+    @include animation-name(blink-outer); }
+  div:last-child {
+    @include animation-name(blink-inner); } }
+
+
+
+@-webkit-keyframes blink-outer {
+  0% { @include state-outer($delta); }
+  100% { @include state-outer(); } }
+@keyframes blink-outer {
+  0% { @include state-outer($delta); }
+  100% { @include state-outer(); } }
+
+@-webkit-keyframes blink-inner {
+  0% { @include state-inner($delta); }
+  100% { @include state-inner(); } }
+@keyframes blink-inner {
+  0% { @include state-inner($delta); }
+  100% { @include state-inner(); } }
+
