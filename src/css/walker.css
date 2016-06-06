@@ -9,7 +9,7 @@ body {
   padding: 0;
   background-color: #e9ebee; }
 
-#walker {
+#wanderer {
   position: fixed;
   width: 128px;
   height: 128px;
@@ -26,7 +26,7 @@ body {
   -ms-animation: walk_up 0.9s steps(14) infinite;
   animation: walk_up 0.9s steps(14) infinite; }
 
-@-webkit-keyframes walki_up {
+@-webkit-keyframes walk_up {
   from {
     background-position: 0 0px; }
   to {
@@ -45,7 +45,7 @@ body {
   -ms-animation: walk_up_ 0.9s steps(14) infinite;
   animation: walk_up_ 0.9s steps(14) infinite; }
 
-@-webkit-keyframes walki_up_ {
+@-webkit-keyframes walk_up_ {
   from {
     background-position: 0 -128px; }
   to {
@@ -64,7 +64,7 @@ body {
   -ms-animation: walk_up__ 0.9s steps(14) infinite;
   animation: walk_up__ 0.9s steps(14) infinite; }
 
-@-webkit-keyframes walki_up__ {
+@-webkit-keyframes walk_up__ {
   from {
     background-position: 0 -256px; }
   to {
@@ -83,7 +83,7 @@ body {
   -ms-animation: walk_right 0.9s steps(14) infinite;
   animation: walk_right 0.9s steps(14) infinite; }
 
-@-webkit-keyframes walki_right {
+@-webkit-keyframes walk_right {
   from {
     background-position: 0 -384px; }
   to {
@@ -102,7 +102,7 @@ body {
   -ms-animation: walk_down__ 0.9s steps(14) infinite;
   animation: walk_down__ 0.9s steps(14) infinite; }
 
-@-webkit-keyframes walki_down__ {
+@-webkit-keyframes walk_down__ {
   from {
     background-position: 0 -512px; }
   to {
@@ -121,7 +121,7 @@ body {
   -ms-animation: walk_down_ 0.9s steps(14) infinite;
   animation: walk_down_ 0.9s steps(14) infinite; }
 
-@-webkit-keyframes walki_down_ {
+@-webkit-keyframes walk_down_ {
   from {
     background-position: 0 -640px; }
   to {
@@ -140,7 +140,7 @@ body {
   -ms-animation: walk_down 0.9s steps(14) infinite;
   animation: walk_down 0.9s steps(14) infinite; }
 
-@-webkit-keyframes walki_down {
+@-webkit-keyframes walk_down {
   from {
     background-position: 0 -768px; }
   to {

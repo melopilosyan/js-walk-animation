@@ -20,11 +20,11 @@
     return [d, f]
   }
 
-  function walkerWillCallTheseBack() {
+  function wandererWillCallTheseBack() {
     var element = document.createElement('div'), style = element.style,
         computedStyle, w, h;
 
-    // get CSS width and height of class 'flashing'
+    // get CSS width and height of class 'destination'
     element.setAttribute('class', 'destination');
     document.body.appendChild(element);
     computedStyle = window.getComputedStyle(element);
@@ -85,7 +85,7 @@
     }
   };
 
-  function Walker(doAfterStop) {
+  function Wanderer() {
     var MOVE_COEFFICIENT = 2.9, MOVE_INTERVAL = 62, moveID,
         beforeChangeDestination = function () {},
         afterStop = function () {},
@@ -93,13 +93,13 @@
         currentAnimation = 'walk-down',
         currentVector = new Position(),
         destination = new Position(),
-        walkerElement = document.getElementById('walker'),
-        currentPos = new Position(elementPos(walkerElement));
+        wandererElement = document.getElementById('wanderer'),
+        currentPos = new Position(elementPos(wandererElement));
 
     function move() {
       currentPos.changeWith(currentVector.multiply(MOVE_COEFFICIENT));
       if(currentPos.equals(destination)) {
-        walkerElement.classList.remove(currentAnimation);
+        wandererElement.classList.remove(currentAnimation);
         clearInterval(moveID);
         afterStop();
         moveID = 0
@@ -108,20 +108,20 @@
     }
 
     function makeAStep() {
-      walkerElement.style.top = (currentPos.y - 90) + 'px';
-      walkerElement.style.left = (currentPos.x - 64) + 'px'
+      wandererElement.style.top = (currentPos.y - 90) + 'px';
+      wandererElement.style.left = (currentPos.x - 64) + 'px'
     }
 
     function rotate(angel) {
       var dir = angelToDirection(angel);
-      walkerElement.classList.remove(currentDirection, currentAnimation, 'flip');
+      wandererElement.classList.remove(currentDirection, currentAnimation, 'flip');
 
-      walkerElement.classList.add(currentDirection = dir[0], currentAnimation = 'walk-' +  currentDirection);
-      dir[1] && walkerElement.classList.add('flip')
+      wandererElement.classList.add(currentDirection = dir[0], currentAnimation = 'walk-' +  currentDirection);
+      dir[1] && wandererElement.classList.add('flip')
     }
 
     function elementPos() {
-      return { x: walkerElement.offsetLeft + 64, y: walkerElement.offsetTop + 90 }
+      return { x: wandererElement.offsetLeft + 64, y: wandererElement.offsetTop + 90 }
     }
 
     this.setDestination = function (pos) {
@@ -134,26 +134,26 @@
       return this
     };
     this.walk = function () {
-      moveID || (moveID = setInterval(move, MOVE_INTERVAL), walkerElement.classList.add(currentAnimation))
+      moveID || (moveID = setInterval(move, MOVE_INTERVAL), wandererElement.classList.add(currentAnimation))
     };
 
     // beforeChangeDestination
     // afterStop
-    this.setCallBacks = function(opts) {
-      typeof opts.beforeChangeDestination === 'function' && (beforeChangeDestination = opts.beforeChangeDestination)
-      typeof opts.afterStop === 'function' && (afterStop = opts.afterStop)
+    this.setCallBacks = function(CBs) {
+      typeof CBs.beforeChangeDestination === 'function' && (beforeChangeDestination = CBs.beforeChangeDestination)
+      typeof CBs.afterStop === 'function' && (afterStop = CBs.afterStop)
     }
   }
 
-  function Walk() {
-    var walker = new Walker();
+  function Wander() {
+    var wanderer = new Wanderer();
 
-    walker.setCallBacks(walkerWillCallTheseBack());
+    wanderer.setCallBacks(wandererWillCallTheseBack());
 
     document.onclick = function (ev) {
-      walker.setDestination(new Position(ev)).walk();
+      wanderer.setDestination(new Position(ev)).walk();
     }
   }
 
-  Walk()
+  Wander()
 }());
