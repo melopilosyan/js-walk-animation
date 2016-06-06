@@ -1,6 +1,6 @@
 ## Js walk animation
 
-![](/src/images/walker-itself.png?raw=true)
+![](/src/images/walker-itself.png?raw=true 'The wanderer')
 
 This is walk animation demonstration in the WEB browser with pure JavaScript and CSS3 solutions.
 
